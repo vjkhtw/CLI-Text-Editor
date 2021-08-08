@@ -37,10 +37,10 @@ void Rename(){
     int ret;
     char newname[100], oldname[100];
 
-    printf("\n\tEnter the file name\n");
+    printf("\n\tEnter the file name : ");
     scanf("%s", &oldname);
 
-    printf("\n\tEnter the new name\n");
+    printf("\n\tEnter the new name : ");
     scanf("%s", &newname);
 
     ret = rename(oldname, newname);
@@ -56,7 +56,7 @@ void Rename(){
 void Display(){
 
     char ch, fn[100];
-    printf("\n\tEnter the file name: \n");
+    printf("\n\tEnter the file name: ");
     scanf("%s",fn);
 
     fp = fopen(fn, "r");
@@ -104,7 +104,7 @@ void Delete(){
 void Append(){
     char c, fn[100];
 
-    printf("\n\tEnter the file name: \n");
+    printf("\n\tEnter the file name: ");
     scanf("%s", fn);
     fp3 = fopen(fn, "r");
     if(fp3 == NULL)  {
