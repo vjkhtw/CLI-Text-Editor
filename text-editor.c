@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <conio.h>
 #include <string.h>
 #define CTRL_KEYPRESS(k) ((k)  & 0x1f)
@@ -8,12 +9,12 @@ FILE *fp1, *fp2, *fp3, *fp;
 void Create(){
     char c, fn[100];
 
-    fp1=fopen("temp.txt","w");
+    fp1 = fopen("temp.txt","w");
     printf("\n\tEnter the text and press 'CTRL + S' to save\n\n\t");
     while(1){
         c = getchar();
         fputc(c, fp1);
-        if(c == CTRL_KEYPRESS('s')) {
+        if(c == 19) {
             fclose(fp1);
             printf("\n\tEnter then new filename: ");
             scanf("%s",fn);
@@ -48,7 +49,7 @@ void Rename(){
     if(ret == 0) {
         printf("\n\tFile renamed successfully");
     } else {
-        printf("\n\tError: unable to rename the file");
+        printf("\n\tError: unable to rename the file(Please close the file if it's open.)!");
     }
 
 }
@@ -62,16 +63,16 @@ void Display(){
     fp = fopen(fn, "r");
 
     if(fp == NULL){
-        printf("\n\tFile not found!\n");
-        goto end1;
+        printf("\n\tError: File not found!\n");
+        exit(1);
+        fclose(fp);
     }
     else{
-        ch = fgetc(fp);
-        while(ch != EOF){
+        while(!feof(fp)){
+            ch = getc(fp);
             printf("%c", ch);
-            ch = fgetc(fp);
         }
-        end1 : fclose(fp1);
+        fclose(fp);
         printf("\n\n\tPress any key to continue...\n");
         getch();
     }
@@ -83,19 +84,21 @@ void Delete(){
     char fn[100];
     printf("\n\tEnter the file name: ");
     scanf("%s",fn);
-    fp2 = fopen(fn,"r");
+    fp = fopen(fn,"r");
     if(fp == NULL) {
-        printf("\n\tFile not found!");
-        goto end2;
+        printf("\n\tError: File not found!");
+        exit(1);
+        fclose(fp);
     }
-    fclose(fp2);
+    
     if(remove(fn) == 0) {
         printf("\n\n\tFile has been deleted successfully!\n");
-        goto end2;
+        printf("\n\n\tPress any key to continue...\n");
+        fclose(fp);
     }
     else{
         printf("\n\tError!\n");
-        end2 : printf("\n\n\tPress any key to continue...\n");
+        printf("\n\n\tPress any key to continue...\n");
         getch();
     }
 
@@ -106,12 +109,13 @@ void Append(){
 
     printf("\n\tEnter the file name: ");
     scanf("%s", fn);
-    fp3 = fopen(fn, "r");
-    if(fp3 == NULL)  {
-        printf("\n\tFile not found!");
-        goto end3;
+    fp1 = fopen(fn, "r");
+    if(fp1 == NULL)  {
+        printf("\n\tError: File not found!");
+        exit(1);
+        fclose(fp1);
     }
-    while(!feof(fp3)){
+    while(!feof(fp1)){
         c = getc(fp1);
         printf("%c", c);
     }
@@ -121,21 +125,21 @@ void Append(){
 
     fp1 = fopen(fn, "a");
     while(1){
-    c = getch();
-        if(c == 19){
-            goto end3;
-        }
-        else if(c == 13){
-            c = '\n';
+        c = getch();
+        if(c==19) //ASCII Code 19 == DC3(which basically means CTRL+S)
+            goto end;
+        if(c==13)   { //cartige return
+            c='\n';
             printf("\n\t");
-            fputc(c, fp1);
+            fputc(c,fp1);
         }
         else{
-            printf("%c", c);
-            fputc(c, fp1);
+            printf("%c",c);
+            fputc(c,fp1);
         }
+
     }
-    end3: fclose(fp1);
+    end: fclose(fp1);
     getch();
 }
 
@@ -171,7 +175,7 @@ int main() {
             exit(0);
         }
         else{
-            printf("\n\tInvalid Command!!\n");
+            printf("\n\tError: Invalid Command!!\n");
         }
 
     } while(1);
