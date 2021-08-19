@@ -64,7 +64,6 @@ void Display(){
 
     if(fp == NULL){
         printf("\n\tError: File not found!\n");
-        exit(1);
         fclose(fp);
     }
     else{
@@ -78,31 +77,29 @@ void Display(){
     }
 }
 
-
 void Delete(){
-
     char fn[100];
     printf("\n\tEnter the file name: ");
     scanf("%s",fn);
-    fp = fopen(fn,"r");
-    if(fp == NULL) {
-        printf("\n\tError: File not found!");
-        exit(1);
-        fclose(fp);
-    }
-    
-    if(remove(fn) == 0) {
-        printf("\n\n\tFile has been deleted successfully!\n");
-        printf("\n\n\tPress any key to continue...\n");
-        fclose(fp);
-    }
-    else{
-        printf("\n\tError!\n");
+    fp1=fopen(fn,"r");
+    if(fp1==NULL) {
+        printf("\n\tFile not found!");
         printf("\n\n\tPress any key to continue...\n");
         getch();
     }
+    fclose(fp1);
+    if(remove(fn)==0) {
+        printf("\n\n\tFile has been deleted successfully!");
+        printf("\n\n\tPress any key to continue...\n");
+        getch();
+    }
+    else
+    printf("\n\tError!\n");
+    printf("\n\n\tPress any key to continue...\n");
+    getch();
 
 }
+
 
 void Append(){
     char c, fn[100];
@@ -111,8 +108,7 @@ void Append(){
     scanf("%s", fn);
     fp1 = fopen(fn, "r");
     if(fp1 == NULL)  {
-        printf("\n\tError: File not found!");
-        exit(1);
+        printf("\n\tError: File not found!\n");
         fclose(fp1);
     }
     while(!feof(fp1)){
@@ -121,7 +117,7 @@ void Append(){
     }
     fclose(fp1);
 
-    printf("\n\tType the text and press 'Ctrl+S' to append.\n");
+    printf("\n\n\tType the text and press 'Ctrl+S' to append.\n\n\t");
 
     fp1 = fopen(fn, "a");
     while(1){
@@ -147,7 +143,7 @@ int main() {
 
     char c[5];
 
-    printf("\t\t WLC to CLI-Text-Editor\t\t\t\n\n");
+    printf("\t\t\n\n WLC to CLI-Text-Editor\t\t\t\n\n");
     do{
 
         printf("\n--> (Type ':h' for help) ");
