@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <string.h>
-#define CTRL_KEYPRESS(k) ((k)  & 0x1f)
 
 FILE *fp1, *fp2, *fp3, *fp;
 
